@@ -15,15 +15,15 @@ mod defs;
 mod deprecations;
 mod frompyobject;
 mod konst;
-mod method;
+pub mod method;
 mod module;
 mod params;
 #[cfg(feature = "pyproto")]
 mod proto_method;
-mod pyclass;
-mod pyfunction;
-mod pyimpl;
-mod pymethod;
+pub mod pyclass;
+pub mod pyfunction;
+pub mod pyimpl;
+pub mod pymethod;
 #[cfg(feature = "pyproto")]
 mod pyproto;
 mod wrap;

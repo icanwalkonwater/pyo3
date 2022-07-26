@@ -60,7 +60,7 @@ pub fn option_type_argument(ty: &syn::Type) -> Option<&syn::Type> {
 /// It's built as a `concat!` evaluation, so it's hard to do anything with this
 /// contents such as parse the string contents.
 #[derive(Clone)]
-pub struct PythonDoc(TokenStream);
+pub struct PythonDoc(pub TokenStream);
 
 /// Collects all #[doc = "..."] attributes into a TokenStream evaluating to a null-terminated string
 /// e.g. concat!("...", "\n", "\0")

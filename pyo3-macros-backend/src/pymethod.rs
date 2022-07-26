@@ -25,8 +25,8 @@ pub enum GeneratedPyMethod {
 
 pub struct PyMethod<'a> {
     kind: PyMethodKind,
-    method_name: String,
-    spec: FnSpec<'a>,
+    pub method_name: String,
+    pub spec: FnSpec<'a>,
 }
 
 enum PyMethodKind {
@@ -139,7 +139,7 @@ enum PyMethodProtoKind {
 }
 
 impl<'a> PyMethod<'a> {
-    fn parse(
+    pub fn parse(
         sig: &'a mut syn::Signature,
         meth_attrs: &mut Vec<syn::Attribute>,
         options: PyFunctionOptions,
