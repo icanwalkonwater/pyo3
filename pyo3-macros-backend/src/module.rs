@@ -22,7 +22,7 @@ use syn::{
 #[derive(Default)]
 pub struct PyModuleOptions {
     krate: Option<CrateAttribute>,
-    name: Option<syn::Ident>,
+    pub name: Option<syn::Ident>,
 }
 
 impl PyModuleOptions {
