@@ -7,9 +7,9 @@
 
 // Listed first so that macros in this module are available in the rest of the crate.
 #[macro_use]
-mod utils;
+pub mod utils;
 
-mod attributes;
+pub mod attributes;
 #[cfg(feature = "pyproto")]
 mod defs;
 mod deprecations;
