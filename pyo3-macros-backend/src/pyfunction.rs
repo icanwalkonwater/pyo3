@@ -18,6 +18,7 @@ use syn::{
     parse::{Parse, ParseBuffer, ParseStream},
     token::Comma,
 };
+use crate::method::FnSpec;
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Argument {
@@ -366,14 +367,14 @@ pub fn build_py_function(
     impl_wrap_pyfunction(ast, options)
 }
 
-/// Generates python wrapper over a function that allows adding it to a python module as a python
-/// function
-pub fn impl_wrap_pyfunction(
+pub fn parse_py_function(
     func: &mut syn::ItemFn,
-    options: PyFunctionOptions,
-) -> syn::Result<TokenStream> {
+    options: PyFunctionOptions
+) -> Result<FnSpec<'_>> {
     check_generic(&func.sig)?;
     ensure_not_async_fn(&func.sig)?;
+
+    let func_span = func.span();
 
     let python_name = options
         .name
@@ -392,7 +393,7 @@ pub fn impl_wrap_pyfunction(
         const PASS_MODULE_ERR: &str = "expected &PyModule as first argument with `pass_module`";
         ensure_spanned!(
             !arguments.is_empty(),
-            func.span() => PASS_MODULE_ERR
+            func_span => PASS_MODULE_ERR
         );
         let arg = arguments.remove(0);
         ensure_spanned!(
@@ -432,8 +433,21 @@ pub fn impl_wrap_pyfunction(
         unsafety: func.sig.unsafety,
     };
 
-    let vis = &func.vis;
-    let name = &func.sig.ident;
+    Ok(spec)
+}
+
+/// Generates python wrapper over a function that allows adding it to a python module as a python
+/// function
+pub fn impl_wrap_pyfunction(
+    func: &mut syn::ItemFn,
+    options: PyFunctionOptions,
+) -> syn::Result<TokenStream> {
+    let vis = func.vis.clone();
+    let name = func.sig.ident.clone();
+
+    let spec = parse_py_function(func, options)?;
+
+    let krate = &spec.krate;
 
     let wrapper_ident = format_ident!("__pyfunction_{}", spec.name);
     let wrapper = spec.get_wrapper_function(&wrapper_ident, None)?;
