@@ -461,7 +461,7 @@ pub fn impl_wrap_pyfunction(
         #[doc(hidden)]
         #vis mod #name {
             use #krate as _pyo3;
-            pub(crate) struct PyO3Def;
+            pub struct PyO3Def;
 
             // Exported for `wrap_pyfunction!`
             pub use _pyo3::impl_::pyfunction::wrap_pyfunction as wrap;
