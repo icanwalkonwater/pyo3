@@ -3,8 +3,8 @@ use quote::{format_ident, quote};
 use syn::{parse::Parse, spanned::Spanned, Ident, Token};
 
 pub struct WrapPyFunctionArgs {
-    function: syn::Path,
-    comma_and_arg: Option<(Token![,], syn::Expr)>,
+    pub function: syn::Path,
+    pub comma_and_arg: Option<(Token![,], syn::Expr)>,
 }
 
 impl Parse for WrapPyFunctionArgs {
